@@ -1,8 +1,10 @@
-package br.com.gft.listatarefas;
+package br.com.gft.listatarefas.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import br.com.gft.listatarefas.R;
 
 public class AdicionarTarefaActivity extends AppCompatActivity {
 
