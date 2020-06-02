@@ -13,13 +13,14 @@ import org.w3c.dom.Text;
 import java.util.List;
 
 import br.com.gft.listatarefas.R;
+import br.com.gft.listatarefas.model.Tarefa;
 
 public class ListaTarefaAdapter extends RecyclerView.Adapter<ListaTarefaAdapter.MyViewHolder> {
 
 
-    public List<String> listaTarefas;
+    public List<Tarefa> listaTarefas;
 
-    public ListaTarefaAdapter(List<String> lista) {
+    public ListaTarefaAdapter(List<Tarefa> lista) {
         this.listaTarefas = lista;
     }
 
@@ -37,7 +38,7 @@ public class ListaTarefaAdapter extends RecyclerView.Adapter<ListaTarefaAdapter.
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.tarefa.setText(
-                listaTarefas.get(position)
+                listaTarefas.get(position).getNomeTarefa()
         );
     }
 

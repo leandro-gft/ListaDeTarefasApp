@@ -17,15 +17,17 @@ import android.view.MenuItem;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import br.com.gft.listatarefas.R;
 import br.com.gft.listatarefas.adapter.ListaTarefaAdapter;
+import br.com.gft.listatarefas.model.Tarefa;
 
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private List<String> tarefas = new ArrayList<>();
+    private List<Tarefa> listTarefas = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
        //Listagem de tarefas
 
        //Configurar adapter
-        ListaTarefaAdapter adapter = new ListaTarefaAdapter(tarefas);
+        ListaTarefaAdapter adapter = new ListaTarefaAdapter(listTarefas);
 
         //Configurar RecyclerView
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
@@ -49,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayout.VERTICAL));
 
         //Adicionar evento de clique
+
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -81,4 +84,15 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    public void carregarListaTarefas(){
+        Tarefa t1 = new Tarefa("Ir ao mercado");
+        Tarefa t2 = new Tarefa("Ir ao cinema");
+        Tarefa t3 = new Tarefa("Estudar Android");
+
+        listTarefas.addAll(Arrays.asList(t1, t2, t3));
+    }
+
+
+
 }
