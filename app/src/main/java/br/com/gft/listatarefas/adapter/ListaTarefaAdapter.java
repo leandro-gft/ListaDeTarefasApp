@@ -24,7 +24,6 @@ public class ListaTarefaAdapter extends RecyclerView.Adapter<ListaTarefaAdapter.
         this.listaTarefas = lista;
     }
 
-
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
