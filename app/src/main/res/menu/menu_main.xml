@@ -4,7 +4,7 @@
     tools:context="br.com.gft.listatarefas.activity.MainActivity">
     <item
         android:id="@+id/itemSalvar"
-        android:icon="@drawable/ic_check_black_24dp"
+        android:icon="@drawable/ic_check_white_24dp"
         android:orderInCategory="100"
         android:title="Salvar"
         app:showAsAction="always" />

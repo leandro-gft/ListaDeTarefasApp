@@ -1,5 +1,6 @@
 package br.com.gft.listatarefas.activity;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import java.util.List;
 import br.com.gft.listatarefas.R;
 import br.com.gft.listatarefas.RecyclerItemClickListener;
 import br.com.gft.listatarefas.adapter.ListaTarefaAdapter;
+import br.com.gft.listatarefas.helper.DbHelper;
 import br.com.gft.listatarefas.model.Tarefa;
 
 public class MainActivity extends AppCompatActivity {
