@@ -2,9 +2,11 @@ package br.com.gft.listatarefas.helper;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.com.gft.listatarefas.model.Tarefa;
@@ -46,6 +48,20 @@ public class TarefaDAO implements iTarefaDAO {
 
     @Override
     public List<Tarefa> listar() {
-        return null;
+        List<Tarefa> listaTarefas = new ArrayList<>();
+        String sql = "SELECT * FROM "+DbHelper.TABELA_TAREFAS+";";
+        Cursor cursor = le.rawQuery(sql, null);
+
+        while (cursor.moveToNext()){
+            Tarefa tarefa = new Tarefa();
+            Long id = cursor.getLong(cursor.getColumnIndex("id"));
+            String nomeTarefa = cursor.getString(cursor.getColumnIndex("nomeTarefa"));
+
+            tarefa.setId(id);
+            tarefa.setNomeTarefa(nomeTarefa);
+
+            listaTarefas.add(tarefa);
+        }
+        return listaTarefas;
     }
 }

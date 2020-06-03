@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 
 import br.com.gft.listatarefas.R;
@@ -38,9 +39,15 @@ public class AdicionarTarefaActivity extends AppCompatActivity {
             case R.id.itemSalvar:
                 TarefaDAO tarefaDAO = new TarefaDAO(getApplicationContext());
                 Tarefa tarefa = new Tarefa();
-                tarefa.setNomeTarefa(textTarefa.getText().toString());
-                tarefaDAO.salvar(tarefa);
-                finish();
+                String nomeTarefa = textTarefa.getText().toString();
+                if (!nomeTarefa.isEmpty()){
+                    tarefa.setNomeTarefa(nomeTarefa);
+                    tarefaDAO.salvar(tarefa);
+                    finish();
+                } else {
+                    Toast.makeText(getApplicationContext(),"Preencha o nome da tarefa", Toast.LENGTH_LONG).show();
+                }
+
                 break;
         }
         return super.onOptionsItemSelected(item);
