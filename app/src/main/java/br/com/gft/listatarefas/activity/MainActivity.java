@@ -44,12 +44,6 @@ public class MainActivity extends AppCompatActivity {
 
         try {
 
-            //Criando BD
-            SQLiteDatabase bancoDados = openOrCreateDatabase("lista_tarefas", MODE_PRIVATE, null);
-
-            //Criando tabela
-            bancoDados.execSQL("CREATE TABLE IF NOT EXISTS tarefas(id INTEGER PRIMARY KEY AUTOINCREMENT, nomeTarefa VARCHAR)");
-
             //Adicionar evento de clique
             recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(
                     getApplicationContext(),
