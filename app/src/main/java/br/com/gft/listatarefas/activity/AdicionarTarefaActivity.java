@@ -48,22 +48,24 @@ public class AdicionarTarefaActivity extends AppCompatActivity {
             case R.id.itemSalvar:
 
                 TarefaDAO tarefaDAO = new TarefaDAO(getApplicationContext());
+                Tarefa tarefa = new Tarefa();
+                String nomeTarefa = textTarefa.getText().toString();
 
                 if (tarefaAtual != null) {
-                    String nomeTarefa = textTarefa.getText().toString();
                     if (!nomeTarefa.isEmpty()) {
-                        Tarefa tarefa = new Tarefa();
-                        tarefa.setNomeTarefa(textTarefa.getText().toString());
+                        tarefa.setNomeTarefa(nomeTarefa);
                         tarefa.setId(tarefaAtual.getId());
-                        tarefaDAO.atualizar(tarefa);
-                        finish();
+                        if (tarefaDAO.atualizar(tarefa)) {
+                            Toast.makeText(getApplicationContext(), "Sucesso ao atualizar tarefa", Toast.LENGTH_LONG).show();
+                            finish();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Erro ao atualizar tarefa", Toast.LENGTH_LONG).show();
+                        }
                     } else {
                         Toast.makeText(getApplicationContext(), "Preencha sua tarefa", Toast.LENGTH_LONG).show();
                     }
                 } else {
-                    String nomeTarefa = textTarefa.getText().toString();
                     if (!nomeTarefa.isEmpty()) {
-                        Tarefa tarefa = new Tarefa();
                         tarefa.setNomeTarefa(nomeTarefa);
                         if (tarefaDAO.salvar(tarefa)) {
                             Toast.makeText(getApplicationContext(), "Sucesso ao salvar tarefa", Toast.LENGTH_LONG).show();

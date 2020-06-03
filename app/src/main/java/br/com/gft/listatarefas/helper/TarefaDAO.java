@@ -59,9 +59,7 @@ public class TarefaDAO implements iTarefaDAO {
             Log.e("INFO", "Erro ao deletar tarefa "+e.getMessage());
             return false;
         }
-
-
-        return false;
+        return true;
     }
 
     @Override

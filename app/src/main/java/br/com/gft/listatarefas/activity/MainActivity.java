@@ -1,12 +1,14 @@
 package br.com.gft.listatarefas.activity;
 
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -14,14 +16,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import br.com.gft.listatarefas.R;
@@ -34,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private List<Tarefa> listTarefas = new ArrayList<>();
+    private Tarefa tarefaSelecionada;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onItemClick(View view, int position) {
                         //Recuperar tarefa para edição
-                        Tarefa tarefaSelecionada = listTarefas.get(position);
+                        tarefaSelecionada = listTarefas.get(position);
 
                         //Envia tarefa para tela AdicionarTarefa
                         Intent intent = new Intent(MainActivity.this, AdicionarTarefaActivity.class);
@@ -62,9 +62,8 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onLongItemClick(View view, int position) {
-                        TarefaDAO tarefaDAO = new TarefaDAO(getApplicationContext());
-                        tarefaDAO.deletar(listTarefas.get(position));
+                    public void onLongItemClick(View view, int position){
+                        alertaExclusao(position);
                     }
 
                     @Override
@@ -78,10 +77,41 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), AdicionarTarefaActivity.class);
-                startActivity(intent);
+               Intent intent = new Intent(getApplicationContext(), AdicionarTarefaActivity.class);
+               startActivity(intent);
             }
         });
+    }
+
+    private void alertaExclusao(int position) {
+        tarefaSelecionada = listTarefas.get(position);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle("Confirmação de exclusão");
+        builder.setMessage("Tem certeza que deseja excluir '" +tarefaSelecionada.getNomeTarefa()+ "' ?");
+        builder.setIcon(R.drawable.ic_delete_black_24dp);
+        builder.setPositiveButton("SIM", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int p) {
+                if (tarefaSelecionada!=null) {
+                    TarefaDAO tarefaDAO = new TarefaDAO(getApplicationContext());
+
+                    if (tarefaDAO.deletar(tarefaSelecionada)) {
+                        Toast.makeText(getApplicationContext(), "Tarefa excluída com sucesso", Toast.LENGTH_LONG).show();
+                        carregarListaTarefas();
+                    } else{
+                        Toast.makeText(getApplicationContext(), "Erro ao excluir a tarefa", Toast.LENGTH_LONG).show();
+                    }
+                } else{
+                    Toast.makeText(getApplicationContext(), "Não foi possível excluir a tarefa", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        builder.setNegativeButton("NÃO", null);
+
+        builder.create();
+        builder.show();
     }
 
     @Override
