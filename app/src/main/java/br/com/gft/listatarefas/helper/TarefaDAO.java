@@ -38,11 +38,29 @@ public class TarefaDAO implements iTarefaDAO {
 
     @Override
     public boolean atualizar(Tarefa tarefa) {
-        return false;
+        try{
+            ContentValues cv = new ContentValues();
+            cv.put("nomeTarefa", tarefa.getNomeTarefa());
+            escreve.update(DbHelper.TABELA_TAREFAS, cv,"id="+tarefa.getId(),null);
+            Log.i("INFO", "Tarefa atualizada com sucesso");
+        } catch (Exception e){
+            Log.e("INFO", "Erro ao atualizar tarefa "+e.getMessage());
+            return false;
+        }
+        return true;
     }
 
     @Override
     public boolean deletar(Tarefa tarefa) {
+        try{
+            escreve.delete(DbHelper.TABELA_TAREFAS, "id="+tarefa.getId(),null);
+            Log.i("INFO", "Tarefa deletada com sucesso");
+        }catch (Exception e){
+            Log.e("INFO", "Erro ao deletar tarefa "+e.getMessage());
+            return false;
+        }
+
+
         return false;
     }
 

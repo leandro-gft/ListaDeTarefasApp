@@ -18,6 +18,7 @@ import br.com.gft.listatarefas.model.Tarefa;
 public class AdicionarTarefaActivity extends AppCompatActivity {
 
     private TextInputEditText textTarefa;
+    private Tarefa tarefaAtual;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +26,14 @@ public class AdicionarTarefaActivity extends AppCompatActivity {
         setContentView(R.layout.activity_adicionar_tarefa);
 
         textTarefa = findViewById(R.id.textTarefa);
+
+        //Recuperar tarefa para edição
+        tarefaAtual = (Tarefa) getIntent().getSerializableExtra("tarefaSelecionada");
+
+        //Configurar tarefa na caixa de texto
+        if (tarefaAtual != null) {
+            textTarefa.setText(tarefaAtual.getNomeTarefa());
+        }
     }
 
     @Override
@@ -35,21 +44,41 @@ public class AdicionarTarefaActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch ( item.getItemId() ){
+        switch (item.getItemId()) {
             case R.id.itemSalvar:
-                TarefaDAO tarefaDAO = new TarefaDAO(getApplicationContext());
-                Tarefa tarefa = new Tarefa();
-                String nomeTarefa = textTarefa.getText().toString();
-                if (!nomeTarefa.isEmpty()){
-                    tarefa.setNomeTarefa(nomeTarefa);
-                    tarefaDAO.salvar(tarefa);
-                    finish();
-                } else {
-                    Toast.makeText(getApplicationContext(),"Preencha o nome da tarefa", Toast.LENGTH_LONG).show();
-                }
 
+                TarefaDAO tarefaDAO = new TarefaDAO(getApplicationContext());
+
+                if (tarefaAtual != null) {
+                    String nomeTarefa = textTarefa.getText().toString();
+                    if (!nomeTarefa.isEmpty()) {
+                        Tarefa tarefa = new Tarefa();
+                        tarefa.setNomeTarefa(textTarefa.getText().toString());
+                        tarefa.setId(tarefaAtual.getId());
+                        tarefaDAO.atualizar(tarefa);
+                        finish();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Preencha sua tarefa", Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    String nomeTarefa = textTarefa.getText().toString();
+                    if (!nomeTarefa.isEmpty()) {
+                        Tarefa tarefa = new Tarefa();
+                        tarefa.setNomeTarefa(nomeTarefa);
+                        if (tarefaDAO.salvar(tarefa)) {
+                            Toast.makeText(getApplicationContext(), "Sucesso ao salvar tarefa", Toast.LENGTH_LONG).show();
+                            finish();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Erro ao salvar tarefa", Toast.LENGTH_LONG).show();
+                        }
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Preencha sua tarefa", Toast.LENGTH_LONG).show();
+                    }
+                }
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
 }
+
+

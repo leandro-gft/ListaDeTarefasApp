@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,7 +27,6 @@ import java.util.List;
 import br.com.gft.listatarefas.R;
 import br.com.gft.listatarefas.RecyclerItemClickListener;
 import br.com.gft.listatarefas.adapter.ListaTarefaAdapter;
-import br.com.gft.listatarefas.helper.DbHelper;
 import br.com.gft.listatarefas.helper.TarefaDAO;
 import br.com.gft.listatarefas.model.Tarefa;
 
@@ -52,11 +52,19 @@ public class MainActivity extends AppCompatActivity {
                 new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
+                        //Recuperar tarefa para edição
+                        Tarefa tarefaSelecionada = listTarefas.get(position);
 
+                        //Envia tarefa para tela AdicionarTarefa
+                        Intent intent = new Intent(MainActivity.this, AdicionarTarefaActivity.class);
+                        intent.putExtra("tarefaSelecionada", tarefaSelecionada);
+                        startActivity(intent);
                     }
 
                     @Override
                     public void onLongItemClick(View view, int position) {
+                        TarefaDAO tarefaDAO = new TarefaDAO(getApplicationContext());
+                        tarefaDAO.deletar(listTarefas.get(position));
                     }
 
                     @Override
